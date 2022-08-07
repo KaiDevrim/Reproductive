@@ -1,0 +1,23 @@
+{
+  "name": "Reproductive",
+  "description": "Decreases your productivity to the max!",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "icons": {
+    "16": "./icon.png",
+    "32": "./icon.png",
+    "48": "./icon.png",
+    "128": "./icon.png"
+  },
+  "background": {
+    "scripts": ["./index.js"],
+    "persistent": true
+  },
+  "permissions": [
+    "<all_urls>",
+    "background",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking"
+  ]
+}
