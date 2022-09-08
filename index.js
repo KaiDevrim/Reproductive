@@ -64,51 +64,19 @@ const distractions = [
   "wattpad.com",
 ];
 
-const productivity = [
-  "khanacademy.org",
-  "edu",
-  "cnx.org",
-  "github.com",
-  "gov",
-  "hackclub.com",
-  "hackclub.dev",
-  "wikipedia.org",
-  "wikiversity.org",
-  "wikibooks.org",
-  "wiktionary.org",
-  "gmail.com",
-  "bbc.com",
-  "forbes.com",
-  "economist.com",
-  "nbcnews.com",
-  "cnn.com",
-  "msnbc.com",
-  "huffingtonpost.com",
-  "businessinsider.com",
-  "nytimes.com",
-  "bloomberg.com",
-  "usatoday.com",
-  "washingtonpost.com",
-  "theguardian.com",
-  "npr.org",
-  "wsj.com",
-  "time.com",
-  "cnbc.com",
-  "tenor.com",
-  "giphy.com",
-  "crunchyroll.com",
-  "w3schools.com",
-  "stackoverflow.com",
-  "openculture.com",
-];
-
-var productivityList = [];
-for (var i = 0; i < productivity.length; i++) {
-  productivityList[i] = "*://*." + productivity[i] + "/*";
-}
-
 chrome.webRequest.onBeforeRequest.addListener(
   function () {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    chrome.tabs.query(queryOptions, ([tab]) => {
+      if (chrome.runtime.lastError) console.error(chrome.runtime.lastError);
+      // `tab` will either be a `tabs.Tab` instance or `undefined`.
+      tabToKeep = tab;
+      chrome.tabs.getAllInWindow(tabToKeep.windowId, function (tabs) {
+        chrome.tabs.remove(
+          tabs.map((tab) => tab.id).filter((tabId) => tabId !== tabToKeep.id)
+        );
+      });
+    });
     return {
       redirectUrl:
         "https://" +
@@ -116,7 +84,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     };
   },
   {
-    urls: productivityList,
+    urls: ["<all_urls>"],
     types: [
       "main_frame",
       "sub_frame",
